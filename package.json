@@ -42,10 +42,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/collospot-wifi-billing"
+    "url": "https://github.com/kayode007/miktrotik-hotspot-billing"
   },
   "bugs": {
-    "url": "https://github.com/your-username/collospot-wifi-billing/issues"
+    "url": "https://github.com/kayode007/miktrotik-hotspot-billing/issues"
   },
-  "homepage": "https://github.com/your-username/collospot-wifi-billing#readme"
+  "homepage": "https://github.com/kayode007/miktrotik-hotspot-billing#readme"
 }
