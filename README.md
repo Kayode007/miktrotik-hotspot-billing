@@ -1,4 +1,4 @@
-# DenisTec - Smart WiFi Billing System
+# NioadeSolution - Smart WiFi Billing System
 
 **"Connect. Pay. Browse — Seamlessly."**
 
