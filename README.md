@@ -273,13 +273,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 📞 Contact
 
 For support or inquiries:
-- **Email**: support@mwakidenice.md@gmail.com
-- **Phone**: +254 798 750 585
-- **Website**: https://mwakidenis.pages.dev/
 
 ---
 
 - Empowering Nigeria's digital connectivity, one WiFi connection at a time. 🇳🇬
 
 ---
-Made with ❤️ by **Mwaki Denis**

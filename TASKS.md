@@ -1,6 +1,6 @@
 # TASKS.md — Migration & Upgrade Progress Tracker
 
-> Project: COLLOSPOT Hotspot Billing — copy of `mwakidenis/miktrotik-hotspot-billing`
+> Project: COLLOSPOT Hotspot Billing — copy of `Kayode007/miktrotik-hotspot-billing`
 > Goals: React → Vue 3 (latest), M-Pesa → Paystack (Nigeria), unique custom CSS, fixes.
 
 Legend: [ ] Pending · [~] In Progress · [x] Done · [!] Blocked
