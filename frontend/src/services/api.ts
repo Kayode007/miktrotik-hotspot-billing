@@ -1,9 +1,10 @@
 import axios from 'axios'
-import type { 
-  ApiResponse, 
-  Plan, 
-  PaymentRequest, 
-  PaymentStatusResponse, 
+import type {
+  ApiResponse,
+  Plan,
+  PaymentRequest,
+  PaymentInitResponse,
+  PaymentStatusResponse,
   ConnectionRequest,
   User,
   DashboardStats,
@@ -65,12 +66,12 @@ export const publicAPI = {
   login: (data: { phone: string }): Promise<ApiResponse<{ user: User; token: string }>> =>
     publicApi.post('/public/login', data).then(res => res.data),
 
-  // Payments
-  makePayment: (data: PaymentRequest): Promise<ApiResponse<{ checkoutRequestId: string; customerMessage: string }>> =>
+  // Payments (Paystack)
+  makePayment: (data: PaymentRequest): Promise<ApiResponse<PaymentInitResponse>> =>
     publicApi.post('/public/payment', data).then(res => res.data),
 
-  getPaymentStatus: (checkoutRequestId: string): Promise<ApiResponse<PaymentStatusResponse>> =>
-    publicApi.get(`/public/payment/status/${checkoutRequestId}`).then(res => res.data),
+  getPaymentStatus: (paystackReference: string): Promise<ApiResponse<PaymentStatusResponse>> =>
+    publicApi.get(`/public/payment/status/${paystackReference}`).then(res => res.data),
 
   // Connection
   connect: (data: ConnectionRequest): Promise<ApiResponse<{ message: string; session: any }>> =>

@@ -1,8 +1,8 @@
-// Currency formatter for Kenyan Shillings
+// Currency formatter for Nigerian Naira
 export const formatCurrency = (amount: number): string => {
-  return new Intl.NumberFormat('en-KE', {
+  return new Intl.NumberFormat('en-NG', {
     style: 'currency',
-    currency: 'KES',
+    currency: 'NGN',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(amount)
@@ -30,7 +30,7 @@ export const formatDuration = (hours: number): string => {
   } else {
     const days = Math.floor(hours / 24)
     const remainingHours = hours % 24
-    
+
     if (remainingHours === 0) {
       return `${days} day${days !== 1 ? 's' : ''}`
     } else {
@@ -39,26 +39,24 @@ export const formatDuration = (hours: number): string => {
   }
 }
 
-// Format phone number for display
+// Format phone number for display (Nigerian)
 export const formatPhoneNumber = (phone: string): string => {
-  // Remove any non-digit characters
   const cleaned = phone.replace(/\D/g, '')
-  
-  // Handle Kenyan phone numbers
-  if (cleaned.startsWith('254')) {
+
+  if (cleaned.startsWith('234')) {
     const number = cleaned.slice(3)
-    return `+254 ${number.slice(0, 3)} ${number.slice(3, 6)} ${number.slice(6)}`
+    return `+234 ${number.slice(0, 3)} ${number.slice(3, 6)} ${number.slice(6)}`
   } else if (cleaned.startsWith('0')) {
     const number = cleaned.slice(1)
     return `0${number.slice(0, 3)} ${number.slice(3, 6)} ${number.slice(6)}`
   }
-  
+
   return phone
 }
 
 // Format date to local string
 export const formatDate = (date: string | Date): string => {
-  return new Date(date).toLocaleDateString('en-KE', {
+  return new Date(date).toLocaleDateString('en-NG', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -93,13 +91,13 @@ export const formatRelativeTime = (date: string | Date): string => {
 export const formatSessionStatus = (status: string): { text: string; className: string } => {
   switch (status.toUpperCase()) {
     case 'ACTIVE':
-      return { text: 'Active', className: 'status-active' }
+      return { text: 'Active', className: 'badge badge-success' }
     case 'EXPIRED':
-      return { text: 'Expired', className: 'status-inactive' }
+      return { text: 'Expired', className: 'badge badge-danger' }
     case 'TERMINATED':
-      return { text: 'Terminated', className: 'status-inactive' }
+      return { text: 'Terminated', className: 'badge badge-danger' }
     default:
-      return { text: status, className: 'status-pending' }
+      return { text: status, className: 'badge badge-warning' }
   }
 }
 
@@ -107,37 +105,30 @@ export const formatSessionStatus = (status: string): { text: string; className: 
 export const formatPaymentStatus = (status: string): { text: string; className: string } => {
   switch (status.toUpperCase()) {
     case 'COMPLETED':
-      return { text: 'Completed', className: 'status-active' }
+      return { text: 'Completed', className: 'badge badge-success' }
     case 'PENDING':
-      return { text: 'Pending', className: 'status-pending' }
+      return { text: 'Pending', className: 'badge badge-warning' }
     case 'FAILED':
-      return { text: 'Failed', className: 'status-inactive' }
+      return { text: 'Failed', className: 'badge badge-danger' }
     case 'CANCELLED':
-      return { text: 'Cancelled', className: 'status-inactive' }
+      return { text: 'Cancelled', className: 'badge badge-danger' }
     default:
-      return { text: status, className: 'status-pending' }
+      return { text: status, className: 'badge badge-warning' }
   }
 }
 
-// Generate random session token
-export const generateSessionToken = (): string => {
-  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-}
-
-// Validate Kenyan phone number
-export const isValidKenyanPhone = (phone: string): boolean => {
+// Validate Nigerian phone number (0803..., +234..., 234..., 9 digits)
+export const isValidNigerianPhone = (phone: string): boolean => {
   const cleaned = phone.replace(/\D/g, '')
-  
-  // Check if it's a valid Kenyan number
-  if (cleaned.startsWith('254') && cleaned.length === 12) {
+
+  if (cleaned.startsWith('234') && cleaned.length === 13) {
     return true
-  } else if (cleaned.startsWith('0') && cleaned.length === 10) {
+  } else if (cleaned.startsWith('0') && cleaned.length === 11) {
     return true
-  } else if (cleaned.length === 9) {
-    // Assume it's missing the country code
+  } else if (cleaned.length === 10 && !cleaned.startsWith('0')) {
     return true
   }
-  
+
   return false
 }
 
@@ -145,10 +136,10 @@ export const isValidKenyanPhone = (phone: string): boolean => {
 export const parseSpeedToMbps = (speed: string): number => {
   const match = speed.match(/(\d+(?:\.\d+)?)\s*(Kbps|Mbps|Gbps)/i)
   if (!match) return 0
-  
+
   const value = parseFloat(match[1])
   const unit = match[2].toLowerCase()
-  
+
   switch (unit) {
     case 'kbps':
       return value / 1000

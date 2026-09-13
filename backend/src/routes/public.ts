@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { body, validationResult } from 'express-validator';
-import mpesaService from '../services/mpesaService';
+import paystackService from '../services/paystackService';
 import sessionService from '../services/sessionService';
 import smsService from '../services/smsService';
 
@@ -149,7 +149,7 @@ router.post('/login', [
   }
 });
 
-// Initiate payment
+// Initiate Paystack payment
 router.post('/payment', [
   body('phone').isMobilePhone('any').withMessage('Valid phone number required'),
   body('planId').isUUID().withMessage('Valid plan ID required'),
@@ -186,37 +186,37 @@ router.post('/payment', [
       return res.status(404).json({ success: false, error: 'Plan not found or inactive' });
     }
 
+    // Generate a unique Paystack reference
+    const paystackReference = `CS-${paymentIdPrefix()}-${Date.now()}`;
+
     // Create payment record
     const payment = await prisma.payment.create({
       data: {
         userId: user.id,
         planId,
         amount,
+        paystackReference,
+        paymentMethod: 'PAYSTACK',
         status: 'PENDING'
       }
     });
 
-    // Initiate M-Pesa STK Push
-    const stkResponse = await mpesaService.initiateSTKPush({
-      phone,
+    // Initialize Paystack transaction (hosted checkout)
+    const initResponse = await paystackService.initializeTransaction({
+      email: user.email || `${user.phone.replace(/\D/g, '')}@collospot.ng`,
       amount,
-      accountReference: `COLLOSPOT-${payment.id}`,
-      transactionDesc: `Payment for ${plan.name}`
-    });
-
-    // Update payment with checkout request ID
-    await prisma.payment.update({
-      where: { id: payment.id },
-      data: {
-        checkoutRequestId: stkResponse.CheckoutRequestID
+      reference: paystackReference,
+      metadata: {
+        plan: plan.name,
+        userId: user.id
       }
     });
 
     res.json({
       success: true,
       data: {
-        checkoutRequestId: stkResponse.CheckoutRequestID,
-        customerMessage: stkResponse.CustomerMessage
+        paystackReference,
+        paymentUrl: initResponse.authorization_url
       }
     });
   } catch (error) {
@@ -226,12 +226,12 @@ router.post('/payment', [
 });
 
 // Check payment status
-router.get('/payment/status/:checkoutRequestId', async (req: Request, res: Response) => {
+router.get('/payment/status/:paystackReference', async (req: Request, res: Response) => {
   try {
-    const { checkoutRequestId } = req.params;
+    const { paystackReference } = req.params;
 
     const payment = await prisma.payment.findUnique({
-      where: { checkoutRequestId },
+      where: { paystackReference },
       include: { user: true, plan: true }
     });
 
@@ -252,21 +252,31 @@ router.get('/payment/status/:checkoutRequestId', async (req: Request, res: Respo
       if (!existingSession) {
         const sessionToken = generateSessionToken();
         await sessionService.createSession(payment.userId, payment.planId, sessionToken);
-        
+
         return res.json({
           success: true,
           data: {
             status: 'completed',
+            paystackReference,
             sessionToken
           }
         });
       }
+
+      return res.json({
+        success: true,
+        data: {
+          status: 'completed',
+          paystackReference
+        }
+      });
     }
 
     res.json({
       success: true,
       data: {
         status: payment.status.toLowerCase(),
+        paystackReference,
         amount: payment.amount
       }
     });
@@ -306,18 +316,22 @@ router.post('/connect', [
   }
 });
 
-// M-Pesa callback
-router.post('/payment/mpesa/callback', async (req: Request, res: Response) => {
+// Paystack webhook (payment events)
+router.post('/payment/paystack/webhook', async (req: Request, res: Response) => {
   try {
-    await mpesaService.handleCallback(req.body);
+    await paystackService.handleWebhook(req.body);
     res.json({ success: true });
   } catch (error) {
-    console.error('Callback error:', error);
+    console.error('Webhook error:', error);
     res.status(500).json({ success: false });
   }
 });
 
-// Helper function
+// Helper functions
+function paymentIdPrefix(): string {
+  return Math.random().toString(36).substring(2, 8).toUpperCase();
+}
+
 function generateSessionToken(): string {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }

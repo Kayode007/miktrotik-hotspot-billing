@@ -32,7 +32,7 @@ class SMSService {
   }
 
   async sendPaymentConfirmation(phone: string, amount: number, receiptNumber: string): Promise<boolean> {
-    const message = `Payment confirmed! KES ${amount} received. Receipt: ${receiptNumber}. Your internet access is now active. - COLLOSPOT`;
+    const message = `Payment confirmed! ₦${amount} received. Receipt: ${receiptNumber}. Your internet access is now active. - COLLOSPOT`;
     return await this.sendSMS(phone, message);
   }
 
@@ -66,13 +66,13 @@ class SMSService {
     // Remove any non-digit characters
     phone = phone.replace(/\D/g, '');
     
-    // Handle Kenyan phone numbers
+    // Handle Nigerian phone numbers
     if (phone.startsWith('0')) {
-      phone = '+254' + phone.slice(1);
-    } else if (phone.startsWith('254')) {
+      phone = '+234' + phone.slice(1);
+    } else if (phone.startsWith('234')) {
       phone = '+' + phone;
-    } else if (!phone.startsWith('+254')) {
-      phone = '+254' + phone;
+    } else if (!phone.startsWith('+234')) {
+      phone = '+234' + phone;
     }
     
     return phone;

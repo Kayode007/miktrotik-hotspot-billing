@@ -43,8 +43,7 @@ export interface Payment {
   userId: string
   planId: string
   amount: number
-  mpesaReceiptNumber?: string
-  checkoutRequestId?: string
+  paystackReference?: string
   status: 'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED'
   paymentMethod: string
   createdAt: string
@@ -81,12 +80,19 @@ export interface PaginatedResponse<T> {
 
 export interface PaymentRequest {
   phone: string
+  email?: string
   planId: string
   amount: number
 }
 
+export interface PaymentInitResponse {
+  paystackReference: string
+  paymentUrl: string
+}
+
 export interface PaymentStatusResponse {
   status: 'pending' | 'completed' | 'failed' | 'timeout'
+  paystackReference?: string
   sessionToken?: string
   amount?: number
 }

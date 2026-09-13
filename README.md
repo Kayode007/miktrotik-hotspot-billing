@@ -2,13 +2,13 @@
 
 **"Connect. Pay. Browse — Seamlessly."**
 
-This is a comprehensive WiFi billing system designed specifically for Kenya, featuring M-Pesa integration, MikroTik router control, and a modern web-based admin dashboard.
+This is a comprehensive WiFi billing system designed specifically for Nigeria, featuring Paystack integration, MikroTik router control, and a modern web-based admin dashboard.
 
 ## 🌟 Features
 
 ### 🧍♂️ Customer Features
 - **Captive Portal**: Custom-branded login page with mobile-first design
-- **M-Pesa Integration**: STK Push and Paybill payments via Daraja API
+- **Paystack Integration**: hosted secure checkout (card, bank transfer, USSD) for Nigeria
 - **Multiple Plans**: Time-based, data-based, and subscription packages
 - **Auto-Connect**: Automatic internet access after payment
 - **Real-time Status**: Connection status and usage monitoring
@@ -23,7 +23,7 @@ This is a comprehensive WiFi billing system designed specifically for Kenya, fea
 - **Router Integration**: MikroTik API for bandwidth and access control
 
 ### 🔧 Technical Features
-- **Modern Stack**: React 18 + TypeScript + Node.js + PostgreSQL
+- **Modern Stack**: Vue 3 + TypeScript + Node.js + PostgreSQL
 - **Security**: JWT authentication, HTTPS, rate limiting
 - **Scalable**: Cloud-ready with Docker support
 - **Notifications**: SMS alerts via Africa's Talking
@@ -35,7 +35,7 @@ This is a comprehensive WiFi billing system designed specifically for Kenya, fea
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Customer      │    │   Admin         │    │   MikroTik      │
 │   Portal        │    │   Dashboard     │    │   Router        │
-│   (React)       │    │   (React)       │    │   (API)         │
+│   (Vue)       │    │   (Vue)       │    │   (API)         │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
          └───────────────────────┼───────────────────────┘
@@ -57,7 +57,7 @@ This is a comprehensive WiFi billing system designed specifically for Kenya, fea
 - Node.js 18+ and npm
 - PostgreSQL 14+
 - MikroTik router with API access
-- M-Pesa Daraja API credentials
+- Paystack (Nigeria) credentials
 - Africa's Talking SMS API (optional)
 
 ### 1. Clone Repository
@@ -116,12 +116,9 @@ DATABASE_URL="postgresql://username:password@localhost:5432/collospot_db"
 # JWT
 JWT_SECRET="your-super-secret-jwt-key-here"
 
-# M-Pesa Daraja API
-MPESA_CONSUMER_KEY="your-mpesa-consumer-key"
-MPESA_CONSUMER_SECRET="your-mpesa-consumer-secret"
-MPESA_SHORTCODE="174379"
-MPESA_PASSKEY="your-mpesa-passkey"
-MPESA_CALLBACK_URL="https://yourdomain.com/api/payments/mpesa/callback"
+# Paystack (Nigeria)
+PAYSTACK_SECRET_KEY="sk_test_your-paystack-secret-key"
+PAYSTACK_CALLBACK_URL="https://yourdomain.com/portal"
 
 # MikroTik Router
 MIKROTIK_HOST="192.168.1.1"
@@ -143,11 +140,11 @@ The system comes with pre-configured plans:
 
 | Plan | Duration | Price | Data Limit | Speed |
 |------|----------|-------|------------|-------|
-| Basic 1 Hour | 1 hour | KES 20 | 500MB | 5Mbps |
-| Standard 6 Hours | 6 hours | KES 100 | 2GB | 10Mbps |
-| Premium 24 Hours | 24 hours | KES 300 | 10GB | 20Mbps |
-| Weekly Package | 7 days | KES 1,500 | 50GB | 25Mbps |
-| Monthly Unlimited | 30 days | KES 5,000 | Unlimited | 50Mbps |
+| Basic 1 Hour | 1 hour | ₦ 20 | 500MB | 5Mbps |
+| Standard 6 Hours | 6 hours | ₦ 100 | 2GB | 10Mbps |
+| Premium 24 Hours | 24 hours | ₦ 300 | 10GB | 20Mbps |
+| Weekly Package | 7 days | ₦ 1,500 | 50GB | 25Mbps |
+| Monthly Unlimited | 30 days | ₦ 5,000 | Unlimited | 50Mbps |
 
 ## 🔌 API Endpoints
 
@@ -155,7 +152,7 @@ The system comes with pre-configured plans:
 - `GET /api/public/plans` - Get available plans
 - `POST /api/public/register` - Register new user
 - `POST /api/public/login` - User login
-- `POST /api/public/payment` - Initiate M-Pesa payment
+- `POST /api/public/payment` - Initiate Paystack payment
 - `GET /api/public/payment/status/:id` - Check payment status
 - `POST /api/public/connect` - Connect to internet
 
@@ -173,7 +170,7 @@ The system uses Prisma ORM with the following main models:
 - **User**: Customer and admin accounts
 - **Plan**: Internet packages
 - **Session**: Active user connections
-- **Payment**: M-Pesa transactions
+- **Payment**: Paystack transactions
 - **Voucher**: Prepaid codes (optional)
 
 ### Responsive Breakpoints
@@ -209,12 +206,12 @@ docker-compose up -d
 2. Install Node.js, PostgreSQL, Nginx
 3. Configure SSL certificates
 4. Set up domain and DNS
-5. Configure M-Pesa callback URLs
+5. Configure Paystack callback URLs
 
 ## 📱 Mobile App (Optional)
 
 The system is designed to support a mobile app using the same API:
-- React Native or Flutter
+- Flutter (mobile app)
 - QR code WiFi login
 - Push notifications
 - Offline voucher support
@@ -241,8 +238,8 @@ The system is designed to support a mobile app using the same API:
 
 ### Common Issues
 
-1. **M-Pesa payments failing**
-   - Check Daraja API credentials
+1. **Paystack payments failing**
+   - Check Paystack secret key (sk_test_/sk_live_)
    - Verify callback URL is accessible
    - Ensure phone number format is correct
 
@@ -282,7 +279,7 @@ For support or inquiries:
 
 ---
 
-- Empowering Kenya's digital connectivity, one WiFi connection at a time. 🇰🇪
+- Empowering Nigeria's digital connectivity, one WiFi connection at a time. 🇳🇬
 
 ---
 Made with ❤️ by **Mwaki Denis**

@@ -68,10 +68,9 @@ model Payment {
   userId              String
   planId              String
   amount              Float
-  mpesaReceiptNumber  String?
-  checkoutRequestId   String?       @unique
+  paystackReference   String?       @unique
   status              String        @default("PENDING")
-  paymentMethod       String        @default("MPESA")
+  paymentMethod       String        @default("PAYSTACK")
   createdAt           DateTime      @default(now())
   updatedAt           DateTime      @updatedAt
   

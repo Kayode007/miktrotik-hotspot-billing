@@ -19,12 +19,9 @@ cp backend/.env.example backend/.env
 ### 2. Update Environment Variables
 Edit `backend/.env` with your actual credentials:
 ```env
-# M-Pesa Daraja API
-MPESA_CONSUMER_KEY="your-actual-consumer-key"
-MPESA_CONSUMER_SECRET="your-actual-consumer-secret"
-MPESA_SHORTCODE="your-shortcode"
-MPESA_PASSKEY="your-passkey"
-MPESA_CALLBACK_URL="https://yourdomain.com/api/public/payment/mpesa/callback"
+# Paystack (Nigeria)
+PAYSTACK_SECRET_KEY="sk_live_your-paystack-secret-key"
+PAYSTACK_CALLBACK_URL="https://yourdomain.com/api/public/payment/paystack/callback"
 
 # MikroTik Router
 MIKROTIK_HOST="192.168.1.1"
@@ -205,10 +202,10 @@ sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
 /ip hotspot user profile add name=default rate-limit=1M/5M session-timeout=1h
 ```
 
-## 📱 M-Pesa Integration Setup
+## 📱 Paystack Integration Setup
 
-### 1. Daraja API Registration
-1. Visit [Daraja Portal](https://developer.safaricom.co.ke/)
+### 1. Paystack Registration
+1. Visit the Paystack dashboard at [paystack.com](https://paystack.com/) and get your secret keys
 2. Create account and new app
 3. Get Consumer Key and Consumer Secret
 4. Generate Passkey for your shortcode
@@ -219,7 +216,7 @@ sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
 
 ### 3. Testing
 ```bash
-# Test STK Push
+# Test hosted checkout
 curl -X POST https://yourdomain.com/api/public/payment \
   -H "Content-Type: application/json" \
   -d '{
@@ -284,9 +281,9 @@ pm2 restart collospot-backend
    - Verify DATABASE_URL in .env
    - Check database credentials
 
-3. **M-Pesa Payments Failing**
+3. **Paystack Payments Failing**
    - Verify callback URL is accessible
-   - Check Daraja API credentials
+   - Check Paystack secret key (sk_test_/sk_live_)
    - Review payment logs
 
 4. **Router Connection Issues**

@@ -14,7 +14,7 @@ async function main() {
     update: {},
     create: {
       email: 'admin@collospot.com',
-      phone: '+254700000000',
+      phone: '+2348012345678',
       password: hashedPassword,
       firstName: 'Admin',
       lastName: 'User',

@@ -1,7 +1,7 @@
 {
   "name": "collospot-wifi-billing-system",
   "version": "1.0.0",
-  "description": "COLLOSPOT - Smart WiFi Billing System for Kenya",
+  "description": "COLLOSPOT - Smart WiFi Billing System for Nigeria",
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
@@ -22,12 +22,12 @@
   "keywords": [
     "wifi",
     "billing",
-    "mpesa",
+    "paystack",
     "mikrotik",
-    "kenya",
+    "nigeria",
     "hotspot",
     "captive-portal",
-    "react",
+    "vue",
     "nodejs",
     "postgresql"
   ],

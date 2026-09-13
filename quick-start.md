@@ -4,7 +4,7 @@
 
 All project dependencies have been installed:
 - ✅ Backend: Node.js + Express + TypeScript + Prisma
-- ✅ Frontend: React 18 + TypeScript + Tailwind CSS
+- ✅ Frontend: Vue 3 + TypeScript + custom CSS design system
 - ✅ Root project scripts
 
 ## 🎯 Quick Test (No Database Required)
